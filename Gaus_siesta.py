@@ -5,20 +5,35 @@ from pandas import read_csv
 import os
 import re
 
-periodic_table = read_csv("Periodic Table of Elements.csv")
+
 # print(periodic_table.head())
 
-
+# Function to convert the file xyz into dataframe or csv
 def convert_file_to_dataframe():
     replace_spaces()
     
 # Read the input file into a DataFrame
-    df = read_csv('example.csv',skiprows=[0], names=['ElementSymbol', 'X', 'Y', 'Z'])
+    df = read_csv('example.csv',skiprows=[0], names=['Symbol', 'X', 'Y', 'Z'])
     df.to_csv('Gaussian_input.csv', index=False)
     # Write the DataFrame to a CSV file
-    print(df.head())
+    # print(df.head())
+    
+ #Get the first block of the siesta input file   
+def data_treatment():
+    xyz = read_csv('Gaussian_input.csv')
+    periodic_table = read_csv("Periodic Table of Elements.csv")
+    siesta_file1 = xyz.merge(periodic_table,on='Symbol')
+    siesta_filtered = siesta_file1[['Symbol', 'X', 'Y', 'Z', 'AtomicNumber']]
+    chemical_elements =  siesta_filtered['Symbol'].value_counts()
+    siesta_grouped = siesta_filtered.groupby('Symbol').first().reset_index()
+    number_of_species =  siesta_grouped['Symbol'].nunique()
+    number_of_atoms = siesta_filtered.shape[0]
+    siesta_filtered.to_csv('Data to work.csv', index=False)
 
+    # print(siesta_filtered.tail)
+    print(number_of_species)
 
+#change the name of "example.xyz" according to the name of the file to convert
 def replace_spaces():
     # Open the file for reading
     with open('example.xyz', 'r') as file:
@@ -47,7 +62,8 @@ def replace_spaces():
 
         
 if __name__=='__main__':
-    convert_file_to_dataframe()
+    data_treatment()
+    # convert_file_to_dataframe()
     
 
 
