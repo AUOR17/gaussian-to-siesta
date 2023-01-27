@@ -38,8 +38,12 @@ def data_treatment():
         file.write('%block ChemicalSpeciesLabel'+ '\n')
         file.write(siesta_grouped[['Symbol','AtomicNumber']].to_string(index=True,header=False).replace(',','\t\t')+'\n')
         file.write('%endblock ChemicalSpeciesLabel'+ '\n')
+        file.write('AtomicCoordinatesFormat'+ '\t' + 'Ang' + '\n')
+        file.write('%block AtomicCoordinatesAndAtomicSpecies' + '\n')
+        file.write(siesta_filtered[['X','Y','Z']].to_string(index=False,header=False).replace(',','\t\t')+'\n')
+        file.write('%endblock AtomicCoordinatesAndAtomicSpecies' + '\n')
     # print(siesta_filtered.tail)
-    print(siesta_grouped)
+    print(siesta_filtered)
 
 #change the name of "example.xyz" according to the name of the file to convert
 def replace_spaces():
