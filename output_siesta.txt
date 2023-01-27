@@ -1,0 +1,11 @@
+*** Data Input***
+SystemName			Water_molecule
+SystemLabel			h20
+NumberOfSpecies		4
+NumberOfAtoms		77
+%block ChemicalSpeciesLabel
+0   C   6
+1  Co  27
+2   H   1
+3   N   7
+%endblock ChemicalSpeciesLabel

@@ -29,9 +29,17 @@ def data_treatment():
     number_of_species =  siesta_grouped['Symbol'].nunique()
     number_of_atoms = siesta_filtered.shape[0]
     siesta_filtered.to_csv('Data to work.csv', index=False)
-
+    with open('output_siesta.txt','w') as file:
+        file.write('*** Data Input***'+ '\n')
+        file.write('SystemName'+ '\t' + '\t' + '\t' +  'Water_molecule'+ '\n')
+        file.write('SystemLabel'+ '\t' + '\t' + '\t' +  'h20'+ '\n')
+        file.write('NumberOfSpecies' + '\t' + '\t' + str(number_of_species)+ '\n')
+        file.write('NumberOfAtoms' + '\t' + '\t' +  str(number_of_atoms)+ '\n')
+        file.write('%block ChemicalSpeciesLabel'+ '\n')
+        file.write(siesta_grouped[['Symbol','AtomicNumber']].to_string(index=True,header=False).replace(',','\t\t')+'\n')
+        file.write('%endblock ChemicalSpeciesLabel'+ '\n')
     # print(siesta_filtered.tail)
-    print(number_of_species)
+    print(siesta_grouped)
 
 #change the name of "example.xyz" according to the name of the file to convert
 def replace_spaces():
