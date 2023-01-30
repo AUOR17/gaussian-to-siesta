@@ -89,7 +89,7 @@ def replace_spaces():
 
         
 if __name__=='__main__':
-    convert_text()
+     data_treatment()
     # convert_file_to_dataframe()
     
 
