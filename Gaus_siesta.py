@@ -41,14 +41,24 @@ def data_treatment():
         file.write('NumberOfSpecies' + '\t' + '\t' + str(number_of_species)+ '\n')
         file.write('NumberOfAtoms' + '\t' + '\t' +  str(number_of_atoms)+ '\n'+ '\n')
         file.write('%block ChemicalSpeciesLabel'+ '\n')
-        file.write(siesta_grouped[['AtomIndentificator','TabColumn','Symbol','TabColumn','AtomicNumber']].to_string(index=False,header=False).replace(',','\t\t')+'\n')
+        file.write(siesta_grouped[['AtomIndentificator','Symbol','AtomicNumber']].to_string(index=False,header=False).replace(',','\t\t')+'\n')
         file.write('%endblock ChemicalSpeciesLabel'+ '\n'+ '\n')
         file.write('AtomicCoordinatesFormat'+ '\t' + 'Ang' + '\n'+ '\n')
         file.write('%block AtomicCoordinatesAndAtomicSpecies' + '\n')
-        file.write(siesta_filtered[['TabColumn','X','TabColumn','Y','TabColumn','Z','TabColumn','AtomIndentificator']].to_string(index=False,header=False).replace(',','\t\t')+'\n')
+        file.write(siesta_filtered[['X','Y','Z','AtomIndentificator']].to_string(index=False,header=False).replace(',','\t\t\t')+'\n')
         file.write('%endblock AtomicCoordinatesAndAtomicSpecies' + '\n')
     # print(siesta_filtered.tail)
     print(siesta_filtered)
+
+def convert_text():
+    data_treatment()
+    with open("output_siesta.txt", "r") as f:
+        content = f.readlines()
+
+    content = [line.replace(" ", "\t\t") for line in content]
+
+    with open("output_siesta.txt", "w") as f:
+        f.writelines(content)
 
 #change the name of "example.xyz" according to the name of the file to convert
 def replace_spaces():
@@ -79,7 +89,7 @@ def replace_spaces():
 
         
 if __name__=='__main__':
-    data_treatment()
+    convert_text()
     # convert_file_to_dataframe()
     
 
