@@ -10,7 +10,7 @@ NumberOfAtoms		77
 1		\t				C		\t				6
 2		\t		Co		\t		27
 3		\t				H		\t				1
-4		\t				N		\t				7
+4		\t				N		\t			sdasdsadsadsadas	7
 %endblock		ChemicalSpeciesLabel
 
 AtomicCoordinatesFormat	Ang
