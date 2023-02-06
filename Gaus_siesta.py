@@ -21,6 +21,7 @@ def convert_file_to_dataframe():
     
  #Get the first block of the siesta input file   
 def data_treatment():
+    convert_file_to_dataframe()
     xyz = read_csv('Gaussian_input.csv')
     periodic_table = read_csv("Periodic Table of Elements.csv")
     siesta_file1 = xyz.merge(periodic_table,on='Symbol')
@@ -34,7 +35,8 @@ def data_treatment():
     number_of_species =  siesta_grouped['Symbol'].nunique()
     number_of_atoms = siesta_filtered.shape[0]
     siesta_filtered.to_csv('Data to work.csv', index=False)
-    with open('output_siesta.txt','w') as file:
+    output_file =convert_to_fdf_file()
+    with open(output_file,'w') as file:
         file.write('*** Data Input***'+ '\n'+ '\n')
         file.write('SystemName'+ '\t' + '\t' + '\t' +  'Water_molecule'+ '\n')
         file.write('SystemLabel'+ '\t' + '\t' + '\t' +  'h20'+ '\n'+ '\n')
@@ -52,18 +54,20 @@ def data_treatment():
 
 def convert_text():
     data_treatment()
-    with open("output_siesta.txt", "r") as f:
+    output_file =convert_to_fdf_file()
+    with open(output_file, "r") as f:
         content = f.readlines()
 
     content = [line.replace(" ", "\t\t") for line in content]
 
-    with open("output_siesta.txt", "w") as f:
+    with open(output_file, "w") as f:
         f.writelines(content)
 
 #change the name of "example.xyz" according to the name of the file to convert
 def replace_spaces():
     # Open the file for reading
-    with open('example.xyz', 'r') as file:
+    file_name = read_file_xyz()
+    with open(file_name, 'r') as file:
         # Read the file into a string
         file_contents = file.read()
 
@@ -86,10 +90,36 @@ def replace_spaces():
     with open('example.csv', 'w') as file:
         # Write the modified string back to the file
         file.write(file_contents)
+        
+def read_file_xyz():
+    extension = "xyz"
+    filenames = []
+
+    for filename in os.listdir():
+        if filename.endswith(extension) :#and (filename != "requirements.txt" ):
+            filenames.append(filename)
+
+    result = filenames[0]
+    return result
+    # print(result)
+    # print(type(result))
+def convert_to_fdf_file():
+    filename = read_file_xyz()
+    file_require = ".fdf"
+    base_name,file_extension = os.path.splitext(filename)
+    output_name = base_name + file_require
+    return output_name
+    # print(output_name)
+    # print(type(output_name))
+    
 
         
 if __name__=='__main__':
-    convert_text()
+    # convert_text()
+    data_treatment()
+    # replace_spaces()
+    # convert_to_fdf_file()
+    # read_file_txt()
     # convert_file_to_dataframe()
     
 
